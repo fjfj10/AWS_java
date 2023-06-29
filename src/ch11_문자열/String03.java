@@ -18,15 +18,16 @@ public class String03 {
 		for(int i = 0; i < addressArray.length; i++) {
 			if(addressArray[i].contains("부산시")) {
 			//저장공간이 0인 addressArray2를 대신 담을 임시 배열(addressArray보다 한칸 더 큰) 생성
-			String[] tempArray = new String[addressArray2.length+ 1];
+				String[] tempArray = new String[addressArray2.length+ 1];
 			//addressArray2의 저장 정보 옮기기
-			for(int j = 0; j < addressArray2.length; j++) {
+				for(int j = 0; j < addressArray2.length; j++) {
 				//addressArray2를 tempArray에 대입
-				tempArray[j] = addressArray2[j];
-				//addressArray의 정보를 대입
+					tempArray[j] = addressArray2[j];
+				}
+				//새로운값(addressArray)의 정보를 대입
 				tempArray[addressArray2.length] = addressArray[i];
-			}
-			addressArray2 = tempArray;
+				//tempArray를 addressArray2에 대입
+				addressArray2 = tempArray;
 				
 			}else if(addressArray[i].contains("창원시")) {
 				String[] tempArray = new String[addressArray3.length + 1];

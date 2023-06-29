@@ -1,0 +1,33 @@
+package ch11_문자열;
+
+public class StringBuilder01 {
+	public static void main(String[] args) {
+//		String str = "abc";
+//		str = str + "def";
+//		System.out.println(str);
+		
+		StringBuilder builder = new StringBuilder();
+		builder.append("이름: ");
+		builder.append("김준일");
+		builder.delete(builder.indexOf(":"), builder.indexOf(":") + 1);
+//                                   2                          3
+		builder.insert(2, ">>");
+		
+		
+		String str = builder.toString();
+		System.out.println(str);
+		
+		String name = "이름: 김준일";
+//		String front = name.substring(0, 2);
+//		String back = name.substring(4, 7);
+//		System.out.println(front + back);
+		
+		System.out.println(
+				name.substring(0, name.indexOf(":"))
+				.concat(name.substring(name.indexOf(":") + 1)));
+		
+		System.out.println(
+				name.substring(0, 2)
+				.concat(name.substring(3)));
+	}
+}

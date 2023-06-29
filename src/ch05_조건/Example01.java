@@ -14,21 +14,22 @@ public class Example01 {
 	 * 제한: -10,000 ≤ A, B ≤ 10,000  */
 		Scanner scanner = new Scanner(System.in);
 		
-//		int A = 0;
+		int A = 3;
+		int B = 0;
+		
+		if(A > B) {
+			System.out.println('>');
+		}else if(A < B) {
+			System.out.println('<');
+		}else if(A == B) {
+			System.out.println("==");
+		}
+
 		System.out.print("A: ");
 		int input1 = scanner.nextInt();
-//		int B = 0;
+		
 		System.out.print("B: ");
 		int input2 = scanner.nextInt();
-		
-//		if(A > B) {
-//			System.out.println('>');
-//		}else if(A < B) {
-//			System.out.println('<');
-//		}else if(A == B) {
-//			System.out.println("==");
-//		}
-
 		if(input1 > input2) {
 			System.out.println('>');
 		}else if(input1 < input2) {
