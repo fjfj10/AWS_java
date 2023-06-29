@@ -1,0 +1,39 @@
+package ch05_조건;
+
+import java.util.Scanner;
+
+public class switch01 {
+
+	public static void main(String[] args) {
+		
+		Scanner scanner = new Scanner(System.in);
+		char cmd = ' ';
+		
+		System.out.println("명령 선택: ");
+		cmd = scanner.next().charAt(0);
+		
+		
+		switch (cmd) {
+			case 'c': 
+				System.out.println("데이터를 생성합니다.");
+				break;
+				
+			case 'r': 
+				System.out.println("데이터를 조회합니다.");
+				break;    //제어문 명령어
+			
+			case 'u': 
+				System.out.println("데이터를 수정합니다.");
+				break;
+			
+			case 'd': 
+				System.out.println("데이터를 삭제합니다.");
+				break;
+			
+			default: 
+				System.out.println("나머지 처리");
+		}
+
+	}
+
+}
