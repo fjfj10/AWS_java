@@ -17,11 +17,11 @@ public class Example02 {
 		 *  노트: 출력에서 long과 long, long과 int 사이에는 공백이 하나씩 들어간다.  */
 		
 		int N = 20; 
-		
+
 		for(int i = 0; i < (N / 4); i++) {
 			System.out.print("long ");
 		}
-//		System.out.println( + "int");
+		System.out.println("int");
 		
 		
 	}
