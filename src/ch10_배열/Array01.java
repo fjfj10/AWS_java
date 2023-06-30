@@ -3,7 +3,7 @@ package ch10_배열;
 public class Array01 {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		
 		int[] numbers = new int[5];
 		numbers[0] = 10;
 		numbers[1] = 20;

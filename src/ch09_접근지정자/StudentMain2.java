@@ -7,5 +7,8 @@ public class StudentMain2 {
 		Student2 s = new Student2();
 		s.setName("김준일");
 		System.out.println(s.getname());
+		
+		s.setAge(30);
+		System.out.println(s.getage());
 	}
 }
