@@ -14,19 +14,21 @@ public class Example04 {
 	 *  예제입력: A= 14, B=30, C=20   예제출력: 14 50
 	 *  예제입력: A= 17, B=40, C=80   예제출력: 19 00
 	 *  예제입력: A= 23, B=48, C=25   예제출력: 00 13   */	
-		int A = 0;
-		int B = 0;
-		int C = 0;
+		int A = 23;
+		int B = 48;
+		int C = 25;
 		
 		int h = A + C/60;
 		int m = B + C%60;
 		
 		if(h < 24) {
 			if(m < 60) {
-				System.out.println(h + ":" + m);
+			System.out.println(h + ":" + m);
 			}else if(m >= 60) {
-				System.out.println();
+				System.out.println((h + 1) + ":" + (m - 60));
 			}
+		}else if(h >= 24) {
+			System.out.println((h  - 24) + ":" + m);
 		}
 	}
 
