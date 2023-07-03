@@ -10,7 +10,7 @@ public class Phone {
 		System.out.println("전송 내용: " + message);
 	}
 	public void send(String number, String message) {
-		System.out.println(number + "에게 " + message + "내용전송");
+		System.out.println(number + "에게 " + message + " 내용전송");
 	}
 	public void send(String message, int count) {
 		System.out.println(message + "내용 " + count + "번 전송");

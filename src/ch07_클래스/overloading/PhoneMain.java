@@ -5,6 +5,7 @@ public class PhoneMain {
 		Phone phone = new Phone();
 		
 		phone.send("안녕");
+		phone.send("010-2218-8093", "안녕");
 		
 	}
 }
