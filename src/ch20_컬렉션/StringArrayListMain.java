@@ -7,19 +7,22 @@ public class StringArrayListMain {
 	
 	public static void main(String[] args) {
 		CustomArrayList list = new CustomArrayList();
-		list.add("a");;
+		
+		list.add("a");
 		list.add("b");
 		list.add("c");
 		list.add("d");
 		list.add("e");
 		list.add(1, "f");
-				
+		
 		System.out.println(list);
 		System.out.println(list.remove());
 		System.out.println(list);
 		System.out.println(list.remove(3));
 		System.out.println(list);
 		
+		System.out.println("=======================================");
+		 
 		ArrayList<String> arrayList = new ArrayList<String>();
 		arrayList.add("a");
 		arrayList.add("b");
@@ -34,11 +37,8 @@ public class StringArrayListMain {
 		arrayList.set(0, "h");
 		System.out.println(arrayList);
 		
-		LinkedList<String> linkedList = new LinkedList<>();
-//		linkedList.add
-//		linkedList.contains
-//		linkedList.get
 		
-		
+		System.out.println(arrayList.get(0));
 	}
+	
 }
