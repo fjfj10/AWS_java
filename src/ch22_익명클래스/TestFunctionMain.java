@@ -37,6 +37,7 @@ public class TestFunctionMain {
 		};
 		
 		function3.test(30, "김준일");
+		System.out.println();
 		
 //		TestFunction4 function4 = (age, name) -> {
 //			System.out.println("매개변수 2개, 리턴 o");

@@ -12,7 +12,7 @@ public class LambdaTest {
 				return "ROLE_USER";
 			}
 		};
-//		      함수명,클래스명 없다     ()=매개변수 클래스정의부터 함수 정의까지 가능하려면 인터패이스 안에 추상함수가 딱 하나만 존재해야한다(인터페이스 안에서 defalt 사용하여 일반함수 만들기 가능)
+//		      함수명,클래스명 없다     ()=매개변수 클래스정의부터 함수 정의까지 가능하려면 인터패이스 안에 추상함수가 딱 하나만 존재해야한다(인터페이스 안에서 default 사용하여 일반함수 만들기 가능)
 		GrantedAuthorities authorities = () -> {
 			System.out.println("권한 출력");
 			return "ROLE_USER";
