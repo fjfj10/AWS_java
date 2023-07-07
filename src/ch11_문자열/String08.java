@@ -7,8 +7,7 @@ public class String08 {
 		String[] strNumbersArray = strNumbers.split(",");
 		
 		for(int i = 0; i < strNumbersArray.length; i++) {
-			System.out.println(strNumbersArray);
+			System.out.println(strNumbersArray[i]);
 		}
-		
 	}
 }

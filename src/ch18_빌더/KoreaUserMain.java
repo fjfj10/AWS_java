@@ -19,12 +19,13 @@ public class KoreaUserMain {
 				  .password("5678") 
 				  .build();
 		  
-		  System.out.println(koreaUser); System.out.println(koreaUser2);
+		  System.out.println(koreaUser); 
+		  System.out.println(koreaUser2);
 		 
 		
 		KoreaUser koreaUser3 = KoreaUser.builder().userId(1).build();
 		KoreaUser koreaUser4 =new KoreaUser(1, null, null, null, null);
 		KoreaUser koreaUser5 = new KoreaUser();
-		koreaUser3.setUserId(1);    //345모두 같음
+//		koreaUser3.setUserId(1);    //345모두 같음
 	}
 }

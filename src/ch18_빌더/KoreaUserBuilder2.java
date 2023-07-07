@@ -34,7 +34,5 @@ public class KoreaUserBuilder2 {
 	public KoreaUserBuilder2 email(String email) {
 		this.email = email;
 		return this;
-		
-		
 	}
 }
