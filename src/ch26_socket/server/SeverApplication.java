@@ -13,6 +13,8 @@ public class SeverApplication {
 	public static ServerSocket serverSocket;
 	public static int port;
 	
+	
+	
 	public static void main(String[] args) {
 		
 		Thread connectionThread = null;
@@ -53,7 +55,12 @@ public class SeverApplication {
 					try {
 						serverSocket = new ServerSocket(port);
 						while (!Thread.interrupted()) {          //interrupted: 중간에 끼어드는거? -> case2에서 serverSocket.close();로 서버 종료가 일어날 경우 true-> !true = false가 되어 스레드 종료 
-							Socket socket = serverSocket.accept();
+							Socket socket = serverSocket.accept();        //Client의 접속을 기다림(accept), socket은 Client와 연결된 스레드
+							ConnectedSocket connectedSocket = new ConnectedSocket(socket);          //접속이 될 때마다(각각의 소켓마다) 스레드를 만들고 
+							connectedSocket.start();                                                //실행시켜준다
+							
+							ConnectedClientController.getInstance().getConnectedSockets().add(connectedSocket);
+							
 							System.out.println("접속!!");
 							System.out.println(socket.getInetAddress().getHostAddress());				
 						}
