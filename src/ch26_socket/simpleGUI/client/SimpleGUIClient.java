@@ -55,9 +55,12 @@ public class SimpleGUIClient extends JFrame {
 				try {
 					SimpleGUIClient frame = SimpleGUIClient.getInstance();
 					frame.setVisible(true);
-					
-					ClientReceiver clientReceiver = new ClientReceiver();
+										
+					ClientReceiver clientReceiver = new ClientReceiver();					
 					clientReceiver.start();
+
+					RequestBodyDto<String> requestBodyDto = new RequestBodyDto<String>("join", frame.username); 
+					ClientSender.getInstance().send(requestBodyDto);
 					
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -79,8 +82,7 @@ public class SimpleGUIClient extends JFrame {
 		}
 		try {
 			socket = new Socket("127.0.0.1", 8000);          //127.0.0.1은 로컬주소의 변수 같은거 자신의 주소를 불러옴
-			RequestBodyDto<String> requestBodyDto = new RequestBodyDto<String>("join", username); 
-			ClientSender.getInstance().send(requestBodyDto);
+			
 			
 		} catch (IOException e) {
 			e.printStackTrace();
