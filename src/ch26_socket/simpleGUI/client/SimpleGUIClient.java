@@ -1,4 +1,4 @@
-package ch26_socket.simpleGUI.client;
+ package ch26_socket.simpleGUI.client;
 
 import java.awt.EventQueue;
 import java.io.IOException;
@@ -79,7 +79,8 @@ public class SimpleGUIClient extends JFrame {
 		}
 		try {
 			socket = new Socket("127.0.0.1", 8000);          //127.0.0.1은 로컬주소의 변수 같은거 자신의 주소를 불러옴
-			
+			RequestBodyDto<String> requestBodyDto = new RequestBodyDto<String>("join", username); 
+			ClientSender.getInstance().send(requestBodyDto);
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -130,7 +131,6 @@ public class SimpleGUIClient extends JFrame {
 		userListModel = new DefaultListModel<>();
 		userList = new JList(userListModel);
 		userListScrollPane.setViewportView(userList);
-		userListModel.add(0, "bbb");
 		
 	}
 }

@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.util.Objects;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import ch26_socket.simpleGUI.server.dto.RequestBodyDto;
 import ch26_socket.simpleGUI.server.dto.SendMessage;
@@ -38,20 +39,22 @@ public class ConnectedSocket extends Thread {
 	
 	private void requestController(String requestBody) {
 		Gson gson = new Gson();
-		RequestBodyDto<?> requestBodyDto = gson.fromJson(requestBody, RequestBodyDto.class);
+		String resorce = gson.fromJson(requestBody, RequestBodyDto.class).getResource();
 		
-		switch (requestBodyDto.getResource()) {
-			case "SendMessage" : 
-				SendMessage sendMessage = (SendMessage) requestBodyDto.getBody();
+		switch (resorce) {
+			case "SendMessage" :
+				TypeToken<RequestBodyDto<SendMessage>> typeToken = new TypeToken<RequestBodyDto<SendMessage>>() {};
+				//SendMessage을 제네릭으로 사용했기 때문에 TypeToken를 사용하여 SendMessage객체로 정의?
+				RequestBodyDto<SendMessage> requestBodyDto = gson.fromJson(requestBody, typeToken.getType());
+				SendMessage sendMessage = requestBodyDto.getBody();            //SendMessage객체로 변환
 				
-				if(Objects.isNull(sendMessage.getToUsername())) {                  //isNull: 모두에게 전송
-					SimpleGUIServer.connectedSocketList.forEach(con -> {
-						RequestBodyDto<String> showMessageDto = 
-								new RequestBodyDto<String>("showMessage", sendMessage.getFromUsername() + ": " + sendMessage.getMessageBody());
-						ServerSender.getInstance().send(con.socket, showMessageDto);    
-					});
-				}
-//				ServerSender.getInstance().send(socket, null);     	한명 지정하여 전송
+				SimpleGUIServer.connectedSocketList.forEach(connectedSocket -> {
+					RequestBodyDto<String> dto = new RequestBodyDto<String>("showMessage", 
+							sendMessage.getFromUsername() + ": " + sendMessage.getMessageBody());
+					ServerSender.getInstance().send(connectedSocket.socket, dto);
+				});
+				
+				
 				break;
 
 		}
