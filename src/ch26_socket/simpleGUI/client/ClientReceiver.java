@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.List;
 
 import com.google.gson.Gson;
 
@@ -38,6 +39,12 @@ public class ClientReceiver extends Thread{
 			case "showMessage":
 				String messageContent = (String) gson.fromJson(requestBody, RequestBodyDto.class).getBody();
 				SimpleGUIClient.getInstance().getTextArea().append(messageContent + "\n"); 
+				break;
+			
+			case "updateUserList" : 
+				List<String> usernameList = (List<String>) gson.fromJson(requestBody, RequestBodyDto.class).getBody();
+				SimpleGUIClient.getInstance().getUserListModel().clear();
+				SimpleGUIClient.getInstance().getUserListModel().addAll(usernameList);
 				break;
 
 		}

@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import com.google.gson.Gson;
@@ -18,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class ConnectedSocket extends Thread {
 
 	private final Socket socket;
+	private String username;
 	
 	@Override
 	public void run() {
@@ -42,6 +45,31 @@ public class ConnectedSocket extends Thread {
 		String resorce = gson.fromJson(requestBody, RequestBodyDto.class).getResource();
 		
 		switch (resorce) {
+			case "join" : 
+				username = (String) gson.fromJson(requestBody, RequestBodyDto.class).getBody();
+				
+				SimpleGUIServer.connectedSocketList.forEach(connectedSocket -> {
+					List<String> usernameList = new ArrayList<>();
+					
+					SimpleGUIServer.connectedSocketList.forEach(con -> {
+						usernameList.add(con.username);
+					});
+					
+					RequestBodyDto<List<String>> updateUserListDto = new RequestBodyDto<List<String>>("updateUserList", usernameList);
+					RequestBodyDto<String> joinMessageDto = new RequestBodyDto<String>("showMessage", username + "님이 들어왔습니다.");
+					
+					ServerSender.getInstance().send(connectedSocket.socket, updateUserListDto);
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					ServerSender.getInstance().send(connectedSocket.socket, joinMessageDto);
+					
+				});				
+				break;
+				
+				
 			case "SendMessage" :
 				TypeToken<RequestBodyDto<SendMessage>> typeToken = new TypeToken<RequestBodyDto<SendMessage>>() {};
 				//SendMessage을 제네릭으로 사용했기 때문에 TypeToken를 사용하여 SendMessage객체로 정의?
