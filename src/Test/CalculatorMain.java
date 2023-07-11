@@ -2,12 +2,12 @@ package Test;
 
 class Calculator{	
 	
-	public static void add(int num1, int num2) {
-			System.out.println(num1 + num2);
+	public int add(int num1, int num2) {
+			return num1+ num2;
 	}
 
-	public static void sub(int num1, int num2) {
-			System.out.println(num1 - num2);
+	public int sub(int num1, int num2) {
+			return num1 - num2;
 	}
 	
 	
@@ -15,8 +15,9 @@ class Calculator{
 }
 public class CalculatorMain {
 	public static void main(String[] args) {
-		Calculator.add(10, 20);
-		Calculator.sub(200, 100);
+		Calculator calculator = new Calculator();
+		System.out.println(calculator.add(1, 3));
+		System.out.println(calculator.sub(8, 4));
 	}
 }
 //답

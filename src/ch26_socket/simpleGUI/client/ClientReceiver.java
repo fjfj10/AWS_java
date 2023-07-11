@@ -15,6 +15,7 @@ public class ClientReceiver extends Thread{
 			try {
 				BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(simpleGUIClient.getSocket().getInputStream()));
 				String requestBody = bufferedReader.readLine();
+				
 				simpleGUIClient.getTextArea().append(requestBody + "\n");
 				
 			} catch (IOException e) {

@@ -13,6 +13,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import ch26_socket.simpleGUI.client.dto.RequestBodyDto;
+import ch26_socket.simpleGUI.client.dto.SendMessage;
 import lombok.Getter;
 
 import javax.swing.JScrollPane;
@@ -46,7 +48,7 @@ public class SimpleGUIClient extends JFrame {
 	
 	
 
-
+	/*GUIClient 생성*/
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -92,7 +94,8 @@ public class SimpleGUIClient extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+	
+		/*<<Text 입력과 출력(Client간의 대화 표시)부분>>*/
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(12, 10, 298, 188);
 		contentPane.add(scrollPane);
@@ -105,14 +108,13 @@ public class SimpleGUIClient extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-					try {
-						PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
-						printWriter.println(username + ": " +textField.getText());
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					} finally {
-						textField.setText("");
-					}
+					                     
+					SendMessage sendmessage = SendMessage.builder().fromUsername(username).messageBody(textField.getText()).build();
+					
+					RequestBodyDto<SendMessage> requestBodyDto = new RequestBodyDto<>("SendMessage", sendmessage);
+					
+					ClientSender.getInstance().send(requestBodyDto);
+					textField.setText("");
 				}
 			}
 		});
@@ -120,6 +122,7 @@ public class SimpleGUIClient extends JFrame {
 		contentPane.add(textField);
 		textField.setColumns(10);
 		
+		/*<<접속자 목록 표시>>*/
 		userListScrollPane = new JScrollPane();
 		userListScrollPane.setBounds(322, 10, 100, 188);
 		contentPane.add(userListScrollPane);
