@@ -14,6 +14,7 @@ import com.google.gson.reflect.TypeToken;
 
 import ch26_socket.simpleGUI.server.dto.RequestBodyDto;
 import ch26_socket.simpleGUI.server.dto.SendMessage;
+import ch26_socket.simpleGUI.server.entity.Room;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -45,9 +46,39 @@ public class ConnectedSocket extends Thread {
 		String resorce = gson.fromJson(requestBody, RequestBodyDto.class).getResource();
 		
 		switch (resorce) {
-			case "join" : 
-				username = (String) gson.fromJson(requestBody, RequestBodyDto.class).getBody();
+			case "connection" : 
+				username = (String) gson.fromJson(requestBody, RequestBodyDto.class).getBody();				
+				break;
+			
+			case "createRoom":
+				String roomName = (String) gson.fromJson(requestBody, RequestBodyDto.class).getBody();		
 				
+				Room newRoom = Room.builder()
+						.roomName(roomName)
+						.owner(username)
+						.userList(new ArrayList<ConnectedSocket>())
+						.build();
+				
+				SimpleGUIServer.roomList.add(newRoom);
+				
+				List<String> roomNameList = new ArrayList<>();
+				
+				SimpleGUIServer.roomList.forEach(room -> {
+					roomNameList.add(room.getRoomName());
+				});
+				
+				RequestBodyDto<List<String>> updateRoomListRequestBodyDto = new RequestBodyDto<List<String>>("updateRoomList", roomNameList);
+				
+				SimpleGUIServer.connectedSocketList.forEach(con -> {
+					ServerSender.getInstance().send(con.socket, updateRoomListRequestBodyDto);
+				});
+				
+				ServerSender.getInstance().send(socket, updateRoomListRequestBodyDto);
+				
+				break;
+		
+			case "join" : 
+
 				SimpleGUIServer.connectedSocketList.forEach(connectedSocket -> {
 					List<String> usernameList = new ArrayList<>();
 					

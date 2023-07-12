@@ -24,6 +24,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 
 @Getter
 public class SimpleGUIClient extends JFrame {
@@ -69,7 +70,7 @@ public class SimpleGUIClient extends JFrame {
 					ClientReceiver clientReceiver = new ClientReceiver();					
 					clientReceiver.start();
 
-					RequestBodyDto<String> requestBodyDto = new RequestBodyDto<String>("join", frame.username); 
+					RequestBodyDto<String> requestBodyDto = new RequestBodyDto<String>("connection", frame.username); 
 					ClientSender.getInstance().send(requestBodyDto);
 					
 				} catch (Exception e) {
@@ -116,6 +117,29 @@ public class SimpleGUIClient extends JFrame {
 		
 		JButton createRoomButton = new JButton("방만들기");
 		createRoomButton.setBounds(10, 10, 100, 30);
+		createRoomButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				String roomName = JOptionPane.showInputDialog(chattingRoomListPanel, "방제목을 입력하세요.");
+				if(Objects.isNull(roomName)) {
+					return;
+				}
+				if(roomName.isBlank()) {
+					JOptionPane.showMessageDialog(chattingRoomListPanel, "방제목을 입력하세요.", "방만들기 실패", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				
+				for(int i = 0; i < roomListModel.size(); i++) {
+					if(roomListModel.get(i).equals(roomName)) {
+						JOptionPane.showMessageDialog(chattingRoomListPanel, "이미 존재하는 방제목입니다.", "방만들기 실패", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+				}
+				
+				RequestBodyDto<String> requestBodyDto = new RequestBodyDto<String>("createRoom", roomName);
+				ClientSender.getInstance().send(requestBodyDto);
+			}			
+		});
 		chattingRoomListPanel.add(createRoomButton);
 		
 		
