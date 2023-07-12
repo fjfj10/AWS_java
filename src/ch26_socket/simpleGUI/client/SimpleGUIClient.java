@@ -135,7 +135,9 @@ public class SimpleGUIClient extends JFrame {
 						return;
 					}
 				}
-				
+				// RequestBodyDto<String> requestBodyDto = new RequestBodyDto<String>("createRoom", null);
+				// => nullexception발생 :  ConnectedSocket에서 case "createRoom"이 실행될 때 roomName에 null 이들어가 생성불가
+				// 잘 돌아가는지 확인 하려면 Println으로 호출이 되는지 변수에 잘 들어갔는지 등등 확인 가능
 				RequestBodyDto<String> requestBodyDto = new RequestBodyDto<String>("createRoom", roomName);
 				ClientSender.getInstance().send(requestBodyDto);
 			}			

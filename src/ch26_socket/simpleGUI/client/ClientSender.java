@@ -28,7 +28,8 @@ public class ClientSender {
 		try {
 			PrintWriter printWriter = new PrintWriter(SimpleGUIClient.getInstance().getSocket().getOutputStream(), true);
 			printWriter.println(gson.toJson(requestBodyDto));
-			
+			//print로는 전송이 안된다. -> buffer에 다 채우지 못했기 때문
+			//println은 엔터를 기준으로 플러싱? 시킴 buffer에 다 채우지 않아도 전송 가능
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
