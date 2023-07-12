@@ -1,5 +1,6 @@
  package ch26_socket.simpleGUI.client;
 
+import java.awt.CardLayout;
 import java.awt.EventQueue;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -7,6 +8,7 @@ import java.net.Socket;
 import java.util.Objects;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -37,15 +39,23 @@ public class SimpleGUIClient extends JFrame {
 	
 	private String username;
 	private Socket socket;
-
-	private JPanel contentPane;
-	private JTextField textField;
-	private JTextArea textArea;
 	
+	private CardLayout mainCardLayout;
+	private JPanel mainCardPanel;
+
+	private JPanel chattingRoomListPanel;
+	private JScrollPane roomListScrollPanel;
+	private DefaultListModel<String> roomListModel;
+	private JList roomList;;
+	
+	
+	private JPanel chattingRoomPanel;
+	private JTextField messageTextField;
+	private JTextArea chattingTextArea;	
 	private JScrollPane userListScrollPane;
 	private DefaultListModel<String> userListModel;
 	private JList userList;
-	
+			
 	
 
 	/*GUIClient 생성*/
@@ -72,7 +82,7 @@ public class SimpleGUIClient extends JFrame {
 
 	public SimpleGUIClient() {
 		
-		username = JOptionPane.showInputDialog(contentPane, "ID를 입력하세요");							
+		username = JOptionPane.showInputDialog(chattingRoomPanel, "ID를 입력하세요");							
 		
 		if(Objects.isNull(username)) {
 			System.exit(0);
@@ -92,47 +102,76 @@ public class SimpleGUIClient extends JFrame {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		//카드레이아웃을 사용하는 패널 생성
+		mainCardLayout = new CardLayout();
+		mainCardPanel = new JPanel();
+		mainCardPanel.setLayout(mainCardLayout);
+		setContentPane(mainCardPanel);
+		
+		chattingRoomListPanel = new JPanel();
+		chattingRoomListPanel.setLayout(null);
+		chattingRoomListPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		mainCardPanel.add(chattingRoomListPanel, "chattingRoomListPanel");
+		
+		JButton createRoomButton = new JButton("방만들기");
+		createRoomButton.setBounds(10, 10, 100, 30);
+		chattingRoomListPanel.add(createRoomButton);
+		
+		
+		roomListScrollPanel = new JScrollPane();
+		roomListScrollPanel.setBounds(10, 50, 414, 201);
+		chattingRoomListPanel.add(roomListScrollPanel);
+		
+		roomListModel = new DefaultListModel<String>();
+		roomList = new JList(roomListModel);
+		roomListScrollPanel.setViewportView(roomList);
+		
+		chattingRoomPanel = new JPanel();
+		chattingRoomPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		chattingRoomPanel.setLayout(null);
+		mainCardPanel.add(chattingRoomPanel, "contentPane");
 	
 		/*<<Text 입력과 출력(Client간의 대화 표시)부분>>*/
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(12, 10, 298, 188);
-		contentPane.add(scrollPane);
+		JScrollPane chattingTextAreaScrollPanel = new JScrollPane();
+		chattingTextAreaScrollPanel.setBounds(12, 10, 298, 188);
+		chattingRoomPanel.add(chattingTextAreaScrollPanel);
 		
-		textArea = new JTextArea();
-		scrollPane.setViewportView(textArea);
+		chattingTextArea = new JTextArea();
+		chattingTextAreaScrollPanel.setViewportView(chattingTextArea);
 		
-		textField = new JTextField();
-		textField.addKeyListener(new KeyAdapter() {
+		messageTextField = new JTextField();
+		messageTextField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
 					                     
-					SendMessage sendmessage = SendMessage.builder().fromUsername(username).messageBody(textField.getText()).build();
+					SendMessage sendmessage = SendMessage.builder().fromUsername(username).messageBody(messageTextField.getText()).build();
 					
 					RequestBodyDto<SendMessage> requestBodyDto = new RequestBodyDto<>("SendMessage", sendmessage);
 					
 					ClientSender.getInstance().send(requestBodyDto);
-					textField.setText("");
+					messageTextField.setText("");
 				}
 			}
 		});
-		textField.setBounds(12, 208, 410, 31);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		messageTextField.setBounds(12, 208, 410, 31);
+		chattingRoomPanel.add(messageTextField);
+		messageTextField.setColumns(10);
 		
 		/*<<접속자 목록 표시>>*/
 		userListScrollPane = new JScrollPane();
 		userListScrollPane.setBounds(322, 10, 100, 188);
-		contentPane.add(userListScrollPane);
+		chattingRoomPanel.add(userListScrollPane);
 		
 		userListModel = new DefaultListModel<>();
 		userList = new JList(userListModel);
 		userListScrollPane.setViewportView(userList);
 		
+		
+		
 	}
+
+
+	
 }
