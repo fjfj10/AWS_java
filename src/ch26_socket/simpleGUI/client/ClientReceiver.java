@@ -38,7 +38,7 @@ public class ClientReceiver extends Thread{
 		switch (resorce) {
 			case "showMessage":
 				String messageContent = (String) gson.fromJson(requestBody, RequestBodyDto.class).getBody();
-				SimpleGUIClient.getInstance().getTextArea().append(messageContent + "\n"); 
+				SimpleGUIClient.getInstance().getChattingTextArea().append(messageContent + "\n"); 
 				break;
 			
 			case "updateUserList" : 
