@@ -22,9 +22,13 @@ import lombok.Getter;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListModel;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 @Getter
 public class SimpleGUIClient extends JFrame {
@@ -47,7 +51,7 @@ public class SimpleGUIClient extends JFrame {
 	private JPanel chattingRoomListPanel;
 	private JScrollPane roomListScrollPanel;
 	private DefaultListModel<String> roomListModel;
-	private JList roomList;;
+	private JList roomList;
 	
 	
 	private JPanel chattingRoomPanel;
@@ -57,7 +61,6 @@ public class SimpleGUIClient extends JFrame {
 	private DefaultListModel<String> userListModel;
 	private JList userList;
 			
-	
 
 	/*GUIClient 생성*/
 	public static void main(String[] args) {
@@ -140,6 +143,9 @@ public class SimpleGUIClient extends JFrame {
 				// 잘 돌아가는지 확인 하려면 Println으로 호출이 되는지 변수에 잘 들어갔는지 등등 확인 가능
 				RequestBodyDto<String> requestBodyDto = new RequestBodyDto<String>("createRoom", roomName);
 				ClientSender.getInstance().send(requestBodyDto);
+				mainCardLayout.show(mainCardPanel, "chattingRoomPanel");
+				requestBodyDto = new RequestBodyDto<String>("join", roomName);
+				ClientSender.getInstance().send(requestBodyDto);
 			}			
 		});
 		chattingRoomListPanel.add(createRoomButton);
@@ -151,12 +157,23 @@ public class SimpleGUIClient extends JFrame {
 		
 		roomListModel = new DefaultListModel<String>();
 		roomList = new JList(roomListModel);
+		roomList.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getClickCount() == 2) {
+					String roomName = roomListModel.get(roomList.getSelectedIndex());
+					mainCardLayout.show(mainCardPanel, "chattingRoomPanel");
+					RequestBodyDto<String> requestBodyDto = new RequestBodyDto<String>("join", roomName);
+					ClientSender.getInstance().send(requestBodyDto);
+				}
+			}
+		});
 		roomListScrollPanel.setViewportView(roomList);
 		
 		chattingRoomPanel = new JPanel();
 		chattingRoomPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		chattingRoomPanel.setLayout(null);
-		mainCardPanel.add(chattingRoomPanel, "contentPane");
+		mainCardPanel.add(chattingRoomPanel, "chattingRoomPanel");
 	
 		/*<<Text 입력과 출력(Client간의 대화 표시)부분>>*/
 		JScrollPane chattingTextAreaScrollPanel = new JScrollPane();

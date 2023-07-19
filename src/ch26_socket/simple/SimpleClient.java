@@ -25,21 +25,21 @@ public class SimpleClient {
 						BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 						String requestBody = bufferedReader.readLine();
 						System.out.println("내용: " + requestBody);
-					}	
+					}
 				} catch (IOException e) {
-				e.printStackTrace();
+					e.printStackTrace();
 				}
 			});
-			
+
 			inputThread.start();
-			
+
 			while (true) {
 				PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
-				System.out.print("입력: ");
+				System.out.println("입력: ");
 				String input = scanner.nextLine();
-						
-				printWriter.println(input);						
-			}			
+
+				printWriter.println(input);
+			}
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

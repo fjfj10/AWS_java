@@ -107,24 +107,32 @@ public class ConnectedSocket extends Thread {
 	}
 	
 	private void join(String requestBody) {
-		SimpleGUIServer.connectedSocketList.forEach(connectedSocket -> {
-			List<String> usernameList = new ArrayList<>();
-			
-			SimpleGUIServer.connectedSocketList.forEach(con -> {
-				usernameList.add(con.username);
-			});
-			
-			RequestBodyDto<List<String>> updateUserListDto = new RequestBodyDto<List<String>>("updateUserList", usernameList);
-			RequestBodyDto<String> joinMessageDto = new RequestBodyDto<String>("showMessage", username + "님이 들어왔습니다.");
-			
-			ServerSender.getInstance().send(connectedSocket.socket, updateUserListDto);
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+		//room중에서 내가 들어가고자 하는 roomName을 찾는다
+		String roomName = (String) gson.fromJson(requestBody, RequestBodyDto.class).getBody();
+		SimpleGUIServer.roomList.forEach(room -> {
+			//룸이름이 같은곳의 list에 본인을 포함 시킨다
+			if(room.getRoomName().equals(roomName)) {
+				room.getUserList().add(this);
+				
+				List<String> usernameList = new ArrayList<>();
+				
+				room.getUserList().forEach(con -> {
+					usernameList.add(con.username);
+				});
+				
+				room.getUserList().forEach(connectedSocket -> {					
+					RequestBodyDto<List<String>> updateUserListDto = new RequestBodyDto<List<String>>("updateUserList", usernameList);
+					RequestBodyDto<String> joinMessageDto = new RequestBodyDto<String>("showMessage", username + "님이 들어왔습니다.");
+					
+					ServerSender.getInstance().send(connectedSocket.socket, updateUserListDto);
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					ServerSender.getInstance().send(connectedSocket.socket, joinMessageDto);
+				});				
 			}
-			ServerSender.getInstance().send(connectedSocket.socket, joinMessageDto);
-			
 		});				
 	}
 	
@@ -134,11 +142,23 @@ public class ConnectedSocket extends Thread {
 		RequestBodyDto<SendMessage> requestBodyDto = gson.fromJson(requestBody, typeToken.getType());
 		SendMessage sendMessage = requestBodyDto.getBody();            //SendMessage객체로 변환
 		
-		SimpleGUIServer.connectedSocketList.forEach(connectedSocket -> {
-			RequestBodyDto<String> dto = new RequestBodyDto<String>("showMessage", 
-					sendMessage.getFromUsername() + ": " + sendMessage.getMessageBody());
-			ServerSender.getInstance().send(connectedSocket.socket, dto);
+		SimpleGUIServer.roomList.forEach(room -> {
+			//만약 room의 getUserList에 this(= connectedsocket)이 들어있다면 
+			if(room.getUserList().contains(this)) {
+				//방안의 UserList에 들어있는 con(= connectedsocket)에게 showMessage해주겠다.
+				room.getUserList().forEach(con -> {
+					RequestBodyDto<String> dto = new RequestBodyDto<String>("showMessage", 
+							sendMessage.getFromUsername() + ": " + sendMessage.getMessageBody());
+					ServerSender.getInstance().send(con.socket , dto);
+				});
+			}
 		});
+		
+//		SimpleGUIServer.connectedSocketList.forEach(connectedSocket -> {
+//			RequestBodyDto<String> dto = new RequestBodyDto<String>("showMessage", 
+//					sendMessage.getFromUsername() + ": " + sendMessage.getMessageBody());
+//			ServerSender.getInstance().send(connectedSocket.socket, dto);
+//		});
 	}
 	
 }
