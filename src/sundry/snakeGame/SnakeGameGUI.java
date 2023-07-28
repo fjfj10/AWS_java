@@ -1,4 +1,4 @@
-package sundry.snackGame;
+package sundry.snakeGame;
 
 import java.awt.EventQueue;
 
@@ -10,7 +10,7 @@ import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class SnackGameGUI extends JFrame {
+public class SnakeGameGUI extends JFrame {
 
 	private JPanel mainCardPanel;
 	private CardLayout mainCardLayout;
@@ -23,7 +23,7 @@ public class SnackGameGUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					SnackGameGUI frame = new SnackGameGUI();
+					SnakeGameGUI frame = new SnakeGameGUI();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -33,7 +33,7 @@ public class SnackGameGUI extends JFrame {
 	}
 
 	
-	public SnackGameGUI() {
+	public SnakeGameGUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		

@@ -1,4 +1,4 @@
-package sundry.snackGame;
+package sundry.snakeGame;
 
 public class Snake {
     private int[][] body;

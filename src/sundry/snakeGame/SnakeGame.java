@@ -1,4 +1,4 @@
-package sundry.snackGame;
+package sundry.snakeGame;
 
 import java.util.Scanner;
 

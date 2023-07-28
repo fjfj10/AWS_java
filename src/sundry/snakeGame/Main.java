@@ -1,4 +1,4 @@
-package sundry.snackGame;
+package sundry.snakeGame;
 
 
 // Main을 GUI로 생성
